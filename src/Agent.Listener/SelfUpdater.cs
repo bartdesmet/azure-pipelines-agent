@@ -47,6 +47,7 @@ namespace Microsoft.VisualStudio.Services.Agent.Listener
 
         public async Task<bool> SelfUpdate(AgentRefreshMessage updateMessage, IJobDispatcher jobDispatcher, bool restartInteractiveAgent, CancellationToken token)
         {
+#if FALSE // Workaround for agents committing suicide when an update is attempted on ARM64, for which no packages are available yet.
             if (!await UpdateNeeded(updateMessage.TargetVersion, token))
             {
                 Trace.Info($"Can't find available update package.");
@@ -94,7 +95,7 @@ namespace Microsoft.VisualStudio.Services.Agent.Listener
             Trace.Info($"Update script start running");
 
             await UpdateAgentUpdateStateAsync(StringUtil.Loc("AgentExit"));
-
+#endif
             return true;
         }
 
